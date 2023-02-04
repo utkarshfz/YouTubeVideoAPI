@@ -29,25 +29,6 @@ class Video:
         :param published_at: The published_at of this Video.  # noqa: E501
         :type published_at: str
         """
-        self.swagger_types = {
-            'title': str,
-            'description': str,
-            'thumbnail_default': str,
-            'thumbnail_medium': str,
-            'thumbnail_high': str,
-            'video_link': str,
-            'published_at': str
-        }
-
-        self.attribute_map = {
-            'title': 'title',
-            'description': 'description',
-            'thumbnail_default': 'thumbnailDefault',
-            'thumbnail_medium': 'thumbnailMedium',
-            'thumbnail_high': 'thumbnailHigh',
-            'video_link': 'videoLink',
-            'published_at': 'publishedAt'
-        }
         self._title = title
         self._description = description
         self._thumbnail_default = thumbnail_default

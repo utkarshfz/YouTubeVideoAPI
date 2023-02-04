@@ -5,7 +5,7 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from video import Video
+from model.video import Video
 
 
 class VideoDetailList:
@@ -19,13 +19,6 @@ class VideoDetailList:
         :param video_list: The video_list of this VideoDetailList.  # noqa: E501
         :type video_list: List[Video]
         """
-        self.swagger_types = {
-            'video_list': List[Video]
-        }
-
-        self.attribute_map = {
-            'video_list': 'videoList'
-        }
         self._video_list = video_list
 
 
