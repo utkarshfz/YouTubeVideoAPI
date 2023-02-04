@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask , request
+from flask import Blueprint , request
 from service.video_manager import VideoManager
 import json
 
