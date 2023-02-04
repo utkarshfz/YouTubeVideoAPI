@@ -1,0 +1,104 @@
+openapi: 3.0.3
+info:
+  title: YouTubeVideoAPI
+  description: This API Provides an interface to get YouTube Video details.
+  version: 1.0.11
+servers:
+- url: /
+tags:
+- name: YouTubeVideos
+  description: YouTubeVideosDetails
+paths:
+  /getVideos:
+    get:
+      tags:
+      - YouTubeVideos
+      summary: Get Recent YouTube Video Details.
+      description: Fetches Recent YouTube Video Details.
+      operationId: get_videos
+      parameters:
+      - name: page
+        in: query
+        description: Pagination - Page number for the videos
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VideoDetailList'
+                x-content-type: application/json
+        "400":
+          description: Invalid page number
+      x-openapi-router-controller: swagger_server.controllers.you_tube_videos_controller
+components:
+  schemas:
+    VideoDetailList:
+      required:
+      - videoList
+      type: object
+      properties:
+        videoList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Video'
+      example:
+        videoList:
+        - thumbnailMedium: thumbnailMedium
+          publishedAt: publishedAt
+          thumbnailHigh: thumbnailHigh
+          description: description
+          videoLink: videoLink
+          title: title
+          thumbnailDefault: thumbnailDefault
+        - thumbnailMedium: thumbnailMedium
+          publishedAt: publishedAt
+          thumbnailHigh: thumbnailHigh
+          description: description
+          videoLink: videoLink
+          title: title
+          thumbnailDefault: thumbnailDefault
+    Video:
+      required:
+      - description
+      - title
+      - videoLink
+      type: object
+      properties:
+        title:
+          type: string
+          description: Video Title
+        description:
+          type: string
+          description: Video Description
+        thumbnailDefault:
+          type: string
+          description: "Thumbnail Size : 120 * 90"
+        thumbnailMedium:
+          type: string
+          description: "Thumbnail Size : 320 * 180"
+        thumbnailHigh:
+          type: string
+          description: "Thumbnail Size: 480 * 360"
+        videoLink:
+          type: string
+          description: Link to Video
+        publishedAt:
+          type: string
+          description: Publish Date
+      example:
+        thumbnailMedium: thumbnailMedium
+        publishedAt: publishedAt
+        thumbnailHigh: thumbnailHigh
+        description: description
+        videoLink: videoLink
+        title: title
+        thumbnailDefault: thumbnailDefault
+
