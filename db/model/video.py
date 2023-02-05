@@ -13,8 +13,8 @@ class Video(db.Model):
     thumbnail_high = db.Column(db.String(250))
     title = db.Column(db.String(250))
     description = db.Column(db.String(500))
-    published_at = db.Column(db.Date)
-    timestamp = db.Column(db.Date , default = datetime.datetime.now)
+    published_at = db.Column(db.DateTime)
+    timestamp = db.Column(db.DateTime , default = datetime.datetime.now)
 
     def __init__(self , video_id , thumbnail_default , thumbnail_medium , thumbnail_high , title , description , published_at):
         super().__init__()
