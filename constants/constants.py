@@ -1,4 +1,4 @@
-REFRESH_INTERVAL_SEC = 30 # 1 minute.
+REFRESH_INTERVAL_SEC = 60 # 1 minute.
 PAGE_SIZE = 25
 YOUTUBE_QUERY_KEY_WORD = "CRICKET"  #Query String for youtube search.
 ID = "id"

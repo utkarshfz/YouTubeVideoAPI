@@ -5,18 +5,22 @@ import googleapiclient.errors
 from dateutil import parser
 from constants.constants import ITEMS , ID , VIDEOID , SNIPPET , THUMBNAILS , DEFAULT , URL , MEDIUM , HIGH , TITLE , DESCRIPTION , PUBLISHED_AT
 import threading
+from dotenv import load_dotenv
+
 
 scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 api_service_name = "youtube"
 api_version = "v3"
-api_key = "AIzaSyDEow5_gumv8Z2Q_HChDcJS1WVMO7wzPAE"
-
+load_dotenv("apiKey.env")
 class YoutubeDataServiceImpl:
-
     __singleton_lock = threading.Lock()
     __youtube_data_service_instance = None
+    __api_keys =  os.getenv('API_KEYS').split(",")
+    __key_count = len(__api_keys)
+    __key_index = 0
+    
 
     @classmethod
     def get_instance(self):
@@ -31,16 +35,21 @@ class YoutubeDataServiceImpl:
             self.__youtube_data_service_instance = self
         else:
             raise Exception("This is a SingletonClass :: instance already exists, pls use get_instance Method")
+    
 
     # Queries youtuble api to fetch video results and returns them as a list
-    def fetch_videos(query , max_results) -> list:
+    def fetch_videos(self , query , max_results) -> list:
+        
+        
+
         try:
-            youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey = api_key)
+            youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey = self.__api_keys[self.__key_index])
             request = youtube.search().list(part=SNIPPET,maxResults=max_results,q=query)
             data = request.execute()
-        except Exception:
-            print("Exception occured while interacting with you tube api")
-            raise Exception
+        except Exception as e:
+            print("Exception : " + str(e) + " occured while interacting with you tube api --- retrying with another API key")
+            self.__key_index = (self.__key_index + 1) % self.__key_count
+            raise e
         data_items = data[ITEMS]
         video_list = []
         for item in data_items:
@@ -55,7 +64,7 @@ class YoutubeDataServiceImpl:
                 video = Video(video_id = video_id , thumbnail_default = thumbnail_default , thumbnail_medium = thumbnail_medium , thumbnail_high = thumbnail_high,
                 title = title , description = description , published_at = published_at)
                 video_list.append(video)
-            except:
-                print("Exception encountred while parsing video: Skipping current video")
+            except Exception as e:
+                print("Exception " + str(e) + " encountred while parsing video: Skipping current video")
         return video_list
         
