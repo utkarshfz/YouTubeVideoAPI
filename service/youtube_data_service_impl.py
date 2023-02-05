@@ -3,7 +3,7 @@ import os
 import googleapiclient.discovery
 import googleapiclient.errors
 from dateutil import parser
-from constants.constants import ITEMS , ID , VIDEOID , SNIPPET , THUMBNAILS , DEFAULT , URL , MEDIUM , HIGH , TITLE , DESCRIPTION , PUBLISHED_AT
+from constants.constants import ITEMS , ID , VIDEOID , SNIPPET , THUMBNAILS , DEFAULT , URL , MEDIUM , HIGH , TITLE , DESCRIPTION , PUBLISHED_AT , PUBLISHED_AFTER , VIDEO , DATE , API_SERVICE_NAME ,API_VERSION
 import threading
 from dotenv import load_dotenv
 
@@ -11,8 +11,8 @@ from dotenv import load_dotenv
 scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-api_service_name = "youtube"
-api_version = "v3"
+api_service_name = API_SERVICE_NAME
+api_version = API_VERSION
 load_dotenv("apiKey.env")
 class YoutubeDataServiceImpl:
     __singleton_lock = threading.Lock()
@@ -44,7 +44,7 @@ class YoutubeDataServiceImpl:
 
         try:
             youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey = self.__api_keys[self.__key_index])
-            request = youtube.search().list(part=SNIPPET,maxResults=max_results,q=query)
+            request = youtube.search().list(part=SNIPPET,maxResults=max_results,q=query,type=VIDEO,order=DATE,publishedAfter=PUBLISHED_AFTER)
             data = request.execute()
         except Exception as e:
             print("Exception : " + str(e) + " occured while interacting with you tube api --- retrying with another API key")

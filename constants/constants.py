@@ -16,3 +16,8 @@ ITEMS = "items"
 YOU_TUBE_VIDEO_PLAYER_PREFIX = "https://www.youtube.com/watch?v="
 DATE_TIME_FORMAT = "%m-%d-%Y T %H:%M:%S"
 MAX_YOUTUBE_VIDEO_RESPONSE_SIZE = 100
+DATE = "date"
+VIDEO = "video"
+PUBLISHED_AFTER = "2022-01-05T19:47:41Z"
+API_SERVICE_NAME = "youtube"
+API_VERSION = "v3"
