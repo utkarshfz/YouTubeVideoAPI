@@ -2,7 +2,25 @@ version: "3.9"
 services:
   web:
     build: .
+    links:
+      - db
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - "5000:5000"
   db:
-    build: ./resources
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_DB: YouTubeVideoData
+    image: postgres:latest
+    restart: always
+    networks:
+      - default
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+          test: ["CMD", "pg_isready", "-q"]

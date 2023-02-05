@@ -4,6 +4,7 @@ import threading
 import time
 from constants.constants import REFRESH_INTERVAL_SEC , YOUTUBE_QUERY_KEY_WORD , PAGE_SIZE
 from service.youtube_data_service_impl import YoutubeDataServiceImpl;
+from service.video_db_service import VideoDataBaseService
 
 class VideoManager:
     __singleton_lock = threading.Lock()
@@ -35,7 +36,9 @@ class VideoManager:
     def __async_fetch_videos(self):
             while True:
                 video_detail_list = YoutubeDataServiceImpl.fetch_videos(YOUTUBE_QUERY_KEY_WORD , PAGE_SIZE)
-                # add to db.
+                video_db_service = VideoDataBaseService()
+                for video in video_detail_list:
+                    video_db_service.addVideo(video)
                 time.sleep(REFRESH_INTERVAL_SEC)             
     
 

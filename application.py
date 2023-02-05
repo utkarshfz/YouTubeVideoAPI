@@ -6,5 +6,7 @@ __app = Flask(__name__)
 __app.register_blueprint(you_tube_videos_controller)
 video_manager = VideoManager() # Singleton Method. 
 video_manager.start_async_video_fetch_job() # Starts video fetch job.
+
+
 if __name__ == "__main__":
     __app.run(host = "0.0.0.0" , port = 5000, debug = False)
