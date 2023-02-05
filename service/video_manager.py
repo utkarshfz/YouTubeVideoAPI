@@ -49,10 +49,13 @@ class VideoManager:
 
     def __async_fetch_videos(self):
             while True:
-                video_detail_list = YoutubeDataServiceImpl.fetch_videos(YOUTUBE_QUERY_KEY_WORD , MAX_YOUTUBE_VIDEO_RESPONSE_SIZE)
-                video_db_service = VideoDataBaseService()
-                for video in video_detail_list:
-                    video_db_service.addVideo(video)
+                try:
+                    video_detail_list = YoutubeDataServiceImpl.fetch_videos(YOUTUBE_QUERY_KEY_WORD , MAX_YOUTUBE_VIDEO_RESPONSE_SIZE)
+                    video_db_service = VideoDataBaseService()
+                    for video in video_detail_list:
+                        video_db_service.addVideo(video)
+                except:
+                    print("Exception encountered while fetching & adding video retrying after {} seconds" , REFRESH_INTERVAL_SEC)
                 time.sleep(REFRESH_INTERVAL_SEC)             
     
 

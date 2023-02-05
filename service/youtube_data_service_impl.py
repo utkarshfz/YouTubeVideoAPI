@@ -11,7 +11,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 api_service_name = "youtube"
 api_version = "v3"
-api_key = "AIzaSyCf9_Y6GoIaEJvM_WuPRvg0i5IMDs6PttU"
+api_key = "AIzaSyDEow5_gumv8Z2Q_HChDcJS1WVMO7wzPAE"
 
 class YoutubeDataServiceImpl:
 
@@ -34,21 +34,28 @@ class YoutubeDataServiceImpl:
 
     # Queries youtuble api to fetch video results and returns them as a list
     def fetch_videos(query , max_results) -> list:
-        youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey = api_key)
-        request = youtube.search().list(part=SNIPPET,maxResults=max_results,q=query)
-        data = request.execute()
+        try:
+            youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey = api_key)
+            request = youtube.search().list(part=SNIPPET,maxResults=max_results,q=query)
+            data = request.execute()
+        except Exception:
+            print("Exception occured while interacting with you tube api")
+            raise Exception
         data_items = data[ITEMS]
         video_list = []
         for item in data_items:
-            video_id = item[ID][VIDEOID]
-            thumbnail_default = item[SNIPPET][THUMBNAILS][DEFAULT][URL]
-            thumbnail_medium = item[SNIPPET][THUMBNAILS][MEDIUM][URL]
-            thumbnail_high = item[SNIPPET][THUMBNAILS][HIGH][URL]
-            title = item[SNIPPET][TITLE]
-            description = item[SNIPPET][DESCRIPTION]
-            published_at = parser.parse(item[SNIPPET][PUBLISHED_AT])
-            video = Video(video_id = video_id , thumbnail_default = thumbnail_default , thumbnail_medium = thumbnail_medium , thumbnail_high = thumbnail_high,
-            title = title , description = description , published_at = published_at)
-            video_list.append(video)
+            try:
+                video_id = item[ID][VIDEOID]
+                thumbnail_default = item[SNIPPET][THUMBNAILS][DEFAULT][URL]
+                thumbnail_medium = item[SNIPPET][THUMBNAILS][MEDIUM][URL]
+                thumbnail_high = item[SNIPPET][THUMBNAILS][HIGH][URL]
+                title = item[SNIPPET][TITLE]
+                description = item[SNIPPET][DESCRIPTION]
+                published_at = parser.parse(item[SNIPPET][PUBLISHED_AT])
+                video = Video(video_id = video_id , thumbnail_default = thumbnail_default , thumbnail_medium = thumbnail_medium , thumbnail_high = thumbnail_high,
+                title = title , description = description , published_at = published_at)
+                video_list.append(video)
+            except:
+                print("Exception encountred while parsing video: Skipping current video")
         return video_list
         
