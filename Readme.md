@@ -51,16 +51,10 @@ Alternatively
 - Uses Flask framework to support its backend.
 - Psql is used as a persistance layer.
 - This API refreshes its video list(i.e->persits in db) every 1 min
-- This API uses 15 API keys for db refresh rate of 1 min 
-    - ensures atleast 1 API in not exhusted.
-    - Proof:
-        - Number of minutes in a day = 1440
-        - Each KEY has 10000 tokens.
-        - Cost for each search call : 100 tokens
-        - required number of keys : 1440/(1min * 100 token) = 14.4 
-        - so 15 tokens ensures all of them dont expire.
+- This API uses multiple keys switchs to another if one is depleted
 
 
 
 ## 🚀 About Me
 I'm a backend developer working @ SIXT R&D India.
+LinkedIn : https://www.linkedin.com/in/utkarsh-verma-214255164/
